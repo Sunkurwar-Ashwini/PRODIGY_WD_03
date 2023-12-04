@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Tic-Tac-Toe</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="center=device-center, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+     
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #5f8c75;
+        }
+
+        #tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 102px);
+            grid-gap: 3px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            background-color: #b9b5b5;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="main"> 
+        <h1>TIC TAC TOE </h1> 
+        <p id="ins"> 
+              Game starts by just Tap on box<br>
+              <br>First Player starts as 
+            <b>Player X </b>
+                     <br> And Second Player as
+            <b>Player 0</b> 
+    </p>
+    </div>
+    <div id="tic-tac-toe-board"></div>
+    <script>
+        const board = document.getElementById('tic-tac-toe-board');
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        // Create the game board
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.dataset.index = i;
+            cell.addEventListener('click', () => handleCellClick(i));
+            board.appendChild(cell);
+        }
+
+        function handleCellClick(index) {
+            if (gameBoard[index] === '' && gameActive) {
+                gameBoard[index] = currentPlayer;
+                renderBoard();
+                checkWinner();
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function renderBoard() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                cell.textContent = gameBoard[index];
+            });
+        }
+
+        function checkWinner() {
+            const winningCombos = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    announceWinner(gameBoard[a]);
+                    return;
+                }
+            }
+
+            if (!gameBoard.includes('') && gameActive) {
+                announceDraw();
+            }
+        }
+
+        function announceWinner(winner) {
+            alert(`${winner} wins!`);
+            gameActive = false;
+        }
+
+        function announceDraw() {
+            alert('It\'s a draw!');
+            gameActive = false;
+        }
+    </script>
+    <form>
+        <button id="but" onclick=" "> 
+            RESET 
+        </button>
+</form> 
+</body>
+
+</html>
